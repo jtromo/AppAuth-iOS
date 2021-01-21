@@ -117,7 +117,9 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)shouldHandleURL:(NSURL *)URL {
-  return [[self class] URL:URL matchesRedirectionURL:_request.redirectURL];
+  // TODO: Temporary workaround for sample server redirect
+  return [[self class] URL:URL matchesRedirectionURL:_request.redirectURL]
+  || [URL.absoluteString isEqualToString:_request.additionalParameters[@"post_logout_redirect_uri"]]; // TODO: Temporary workaround for sample server redirect
 }
 
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL {
@@ -250,7 +252,8 @@ NS_ASSUME_NONNULL_BEGIN
   // The logic of when to handle the URL is the same as for authorization requests: should match
   // down to the path component.
   return [[OIDAuthorizationSession class] URL:URL
-                        matchesRedirectionURL:_request.postLogoutRedirectURL];
+                        matchesRedirectionURL:_request.postLogoutRedirectURL]
+  || [URL.absoluteString isEqualToString:_request.additionalParameters[@"post_logout_redirect_uri"]]; // TODO: Temporary workaround for sample server redirect
 }
 
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL {
