@@ -117,9 +117,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)shouldHandleURL:(NSURL *)URL {
-  // TODO: Temporary workaround for sample server redirect
   return [[self class] URL:URL matchesRedirectionURL:_request.redirectURL]
-  || [URL.absoluteString isEqualToString:_request.additionalParameters[@"post_logout_redirect_uri"]]; // TODO: Temporary workaround for sample server redirect
+  || [URL.absoluteString containsString:_request.additionalParameters[@"post_logout_redirect_uri"]]; // TODO: Temporary workaround for sample server redirect
 }
 
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL {
@@ -253,7 +252,7 @@ NS_ASSUME_NONNULL_BEGIN
   // down to the path component.
   return [[OIDAuthorizationSession class] URL:URL
                         matchesRedirectionURL:_request.postLogoutRedirectURL]
-  || [URL.absoluteString isEqualToString:_request.additionalParameters[@"post_logout_redirect_uri"]]; // TODO: Temporary workaround for sample server redirect
+  || [URL.absoluteString containsString:_request.additionalParameters[@"post_logout_redirect_uri"]]; // TODO: Temporary workaround for sample server redirect
 }
 
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL {
